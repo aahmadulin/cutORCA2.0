@@ -7,12 +7,26 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
+"""
+Разделить код на несколько модулей:
+Для работы с координатами и сетками
+для создания и хранения датасетов
+для визуализации
+
+Так, вы сможете повысить гибкость кода
+"""
+
+# Добавить логирование. Поможет в отслеживании выполнения кода и его отладке.
+
 # Set parameters.
 # Parent coordinate file.
+
+# Здесь можно использовать конфигурационные файлы (JSON, YAML)
 pcf = xr.open_dataset('/mnt/localssd/Data_nemo/Meshes_domains/Coordinates/Global/ORCA_R36_coord_new.nc').squeeze()
 x_middle = int(pcf['x'].size/2)
 
 # Enter Pacific and Atlantic y-indicies (latitude-like).
+# Можно добавить функцию для автоопределения границ регионов по географическим координатам
 pac_first_yind = 7550
 pac_last_yind = -2
 atl_first_yind = 7350
@@ -30,6 +44,8 @@ target_name = 'arct_cutorca36_coord.nc'
 
 # Patch processing
 
+# Добавить type hints и больше документации (упростите себе и другим жизнь в будущем)
+# Можно добавить Юнит-тесты для всех функций (даже тех, которые добавите после беглого код-ревью)
 def grid_selector(pcf, var, extent, pac_patch=False):
     '''
     Functon that select and cut 2D arrays from parent global ORCA coordinate file.
@@ -50,7 +66,7 @@ def grid_selector(pcf, var, extent, pac_patch=False):
     grid_array
         Ndarray to put in patch dataset.
     '''
-
+    # Можно добавить обработку ошибок для некорректных данных, поможет в будущем в отладке
     # grid type lists
     t_vars = ['nav_lon', 'nav_lat', 'glamt', 'gphit', 'e1t', 'e2t']
     u_vars = ['glamu', 'gphiu', 'e1u', 'e2u']
@@ -128,5 +144,5 @@ pac_dataset = xr.Dataset(
 
 whole_dataset = xr.concat([atl_dataset, pac_dataset], dim='y')
 whole_dataset.to_netcdf(f'{target_path}/{target_name}')
-
+# В текущем коде метаданные не сохраняются, можно добавить их в результирующий датасет, на основе которого делать визуализацию
 # TODO: Some visualization?
