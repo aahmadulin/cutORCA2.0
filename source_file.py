@@ -50,7 +50,7 @@ def grid_selector(pcf, var, extent, pac_patch=False):
     grid_array
         Ndarray to put in patch dataset.
     '''
-
+    # Вставить проверку на наличие переменной var в pcf
     # grid type lists
     t_vars = ['nav_lon', 'nav_lat', 'glamt', 'gphit', 'e1t', 'e2t']
     u_vars = ['glamu', 'gphiu', 'e1u', 'e2u']
@@ -75,6 +75,8 @@ def grid_selector(pcf, var, extent, pac_patch=False):
 
 # Dataset creation
 # TODO: dataset generator. I don't like this wet shit.
+
+# Сделай функцию для создания датасета
 
 # Atlantic patch as xarray Dataset
 atl_extent = [atl_first_yind, atl_last_yind, atl_first_xind, atl_last_xind]
@@ -129,4 +131,5 @@ pac_dataset = xr.Dataset(
 whole_dataset = xr.concat([atl_dataset, pac_dataset], dim='y')
 whole_dataset.to_netcdf(f'{target_path}/{target_name}')
 
+# Вставь функцию визуализации
 # TODO: Some visualization?
